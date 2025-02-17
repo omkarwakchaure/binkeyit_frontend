@@ -11,7 +11,7 @@ import { setUserDetails } from "./store/userSlice";
 import Axios from "./utils/Axios";
 import SummaryApi from "./common/SummaryApi";
 import { setCategories } from "./store/categorySlice";
- 
+import { setSubCategories } from "./store/subCategorySlice";
 function App() {
   const dispatch = useDispatch();
   const fetchUser = async () => {
@@ -39,10 +39,30 @@ function App() {
     }
   };
 
+  const fetchSubCategory = async () => {
+    try {
+      // setLoading(true);
+      const response = await Axios({
+        ...SummaryApi.SUB_CATEGORY.GET,
+      });
+      if (response.data.success) {
+        // setData(response.data.data);
+        dispatch(setSubCategories(response.data.data));
+      }
+    } catch (error) {
+      // AxiosToast(error, "error");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetchUser();
-    fetchCategeory();
-  }, []);
+    if (localStorage.getItem("accessToken")) {
+      fetchUser();
+      fetchCategeory();
+      fetchSubCategory();
+    }
+  }, [localStorage.getItem("accessToken")]);
 
   return (
     <>
