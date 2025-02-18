@@ -32,7 +32,7 @@ const InputField = ({
               id={name}
               name={name}
               autoFocus={name === "name"}
-              placeholder={placeholder}
+              placeholder={placeholder ? placeholder:`Enter ${label}`}
               value={value}
               onChange={onChange}
               required={required}

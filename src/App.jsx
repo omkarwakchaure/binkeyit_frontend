@@ -7,12 +7,13 @@ import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import fetchUserDetails from "./utils/fetchUserDetails";
 import { useDispatch } from "react-redux";
-import { setUserDetails } from "./store/userSlice";
+import { selectUser, setUserDetails } from "./store/userSlice";
 import Axios from "./utils/Axios";
 import SummaryApi from "./common/SummaryApi";
 import { setCategories } from "./store/categorySlice";
 import { setSubCategories } from "./store/subCategorySlice";
 function App() {
+  const user = selectUser();
   const dispatch = useDispatch();
   const fetchUser = async () => {
     try {
@@ -59,10 +60,12 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
       fetchUser();
+    }
+    if (user.email) {
       fetchCategeory();
       fetchSubCategory();
     }
-  }, [localStorage.getItem("accessToken")]);
+  }, [localStorage.getItem("accessToken"), user.email]);
 
   return (
     <>

@@ -7,17 +7,18 @@ import Loading from "../../components/Loading";
 import ViewImage from "../../components/ViewImage";
 import { selectCategories } from "../../store/categorySlice";
 import { IoClose } from "react-icons/io5";
+import { selectSubCategories } from "../../store/subCategorySlice";
 const UploadProduct = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [viewImageUrl, setViewImageUrl] = useState(null);
   const allCategory = selectCategories();
-  const [filteredCategory, setFilteredCategory] = useState([]);
+  const allSubCategory = selectSubCategories();
   const [data, setData] = useState({
     name: "",
     image: [],
     category: [],
     subCategory: [],
-    unit: [],
+    unit: "",
     stock: "",
     price: "",
     discount: "",
@@ -84,6 +85,33 @@ const UploadProduct = () => {
       };
     });
   };
+
+  const handleSubCategorySelection = (e) => {
+    const value = e.target.value;
+    const subCategory = allSubCategory.find(
+      (subCategory) => subCategory._id === value
+    );
+    if (data.subCategory.find((c) => c._id === subCategory._id)) return;
+    setData((preval) => {
+      return {
+        ...preval,
+        subCategory: [...preval.subCategory, subCategory],
+      };
+    });
+  };
+
+  const removeSubCategory = (subCategory) => {
+    setData((preval) => {
+      const updatedSubCategories = preval.subCategory.filter(
+        (c) => c._id !== subCategory._id
+      );
+      return {
+        ...preval,
+        subCategory: updatedSubCategories,
+      };
+    });
+  };
+
   return (
     <section>
       <PageHeader heading="Upload Product" />
@@ -191,6 +219,84 @@ const UploadProduct = () => {
                 })}
               </div>
             </div>
+          </div>
+          <div className="grid gap-1">
+            <label>Select Sub-Category</label>
+            <div className="border focus-within:border-primary-200 rounded">
+              <select
+                className="w-full p-2 bg-transparent outline-none"
+                onChange={handleSubCategorySelection}
+              >
+                <option value={""} disabled>
+                  Select Sub-Category
+                </option>
+                {allSubCategory.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              <div className="flex flex-wrap">
+                {data.subCategory.map((category) => {
+                  return (
+                    <div
+                      key={category._id}
+                      className="flex items-center gap-2 border-b m-2 shadow-md bg-white"
+                    >
+                      <div className="flex items-center gap-2 p-1">
+                        <p>{category.name}</p>
+                      </div>
+                      <IoClose
+                        size={20}
+                        onClick={() => removeSubCategory(category)}
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <InputField
+              label={"Unit"}
+              name={"unit"}
+              type={"text"}
+              value={data.unit}
+              placeholder={""}
+              onChange={handleChange}
+              required={true}
+            />
+            <InputField
+              label={"Number of Stock"}
+              name={"stock"}
+              type={"number"}
+              placeholder={""}
+              value={data.stock}
+              onChange={handleChange}
+              required={true}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <InputField
+              label={"Price"}
+              name={"price"}
+              type={"number"}
+              value={data.price}
+              placeholder={""}
+              onChange={handleChange}
+              required={true}
+            />
+            <InputField
+              label={"Discount"}
+              name={"discount"}
+              type={"number"}
+              placeholder={""}
+              value={data.discount}
+              onChange={handleChange}
+              required={true}
+            />
           </div>
         </form>
       </div>

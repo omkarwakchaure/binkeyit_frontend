@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 const Category = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [categoryData, setCategoryData] = useState([]);
   const [editCategory, setEditCategory] = useState(false);
   const [editCategoryData, setEditCategoryData] = useState({});
   const [deleteCategory, setDeleteCategory] = useState(false);
@@ -22,23 +21,6 @@ const Category = () => {
 
   const dispatch = useDispatch();
   const category = selectCategories() || [];
-
-  // const fetchCategeory = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await Axios({
-  //       ...SummaryApi.getCategory,
-  //     });
-  //     const { data: responseData } = response;
-  //     if (responseData.success) {
-  //       setCategoryData(responseData.data);
-
-  //     }
-  //   } catch (error) {
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {
     console.log(category);
