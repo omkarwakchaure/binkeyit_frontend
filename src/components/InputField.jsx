@@ -16,8 +16,8 @@ const InputField = ({
 }) => {
   return (
     <div className="grid gap-1">
-      <label htmlFor={name}>{label}</label>
-      <div className="bg-blue-50 p-2 border rounded focus-within:border-primary-200 flex items-center">
+      {label && <label htmlFor={name}>{label}:</label>}
+      <div className="p-2 border rounded focus-within:border-primary-200 flex items-center">
         {type !== "textarea" && (
           <>
             <input
@@ -32,7 +32,7 @@ const InputField = ({
               id={name}
               name={name}
               autoFocus={name === "name"}
-              placeholder={placeholder ? placeholder:`Enter ${label}`}
+              placeholder={placeholder ? placeholder : `Enter ${label}`}
               value={value}
               onChange={onChange}
               required={required}

@@ -8,11 +8,15 @@ import ViewImage from "../../components/ViewImage";
 import { selectCategories } from "../../store/categorySlice";
 import { IoClose } from "react-icons/io5";
 import { selectSubCategories } from "../../store/subCategorySlice";
+import AddField from "../../components/AddField";
 const UploadProduct = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [viewImageUrl, setViewImageUrl] = useState(null);
   const allCategory = selectCategories();
   const allSubCategory = selectSubCategories();
+  const [moreField, setMoreField] = useState([]);
+  const [openMoreField, setOpenMoreField] = useState(false);
+  const [fieldName, setFieldName] = useState("");
   const [data, setData] = useState({
     name: "",
     image: [],
@@ -112,10 +116,34 @@ const UploadProduct = () => {
     });
   };
 
+  const handleAddMoreField = () => {
+    setOpenMoreField(false);
+    setData((preval) => {
+      return {
+        ...preval,
+        more_details: {
+          ...preval.more_details,
+          [fieldName]: "",
+        },
+      };
+    });
+    setFieldName("");
+  };
+  const handleMoreFieldChange = (e) => {
+    const { name, value } = e.target;
+    setData((preval) => {
+      return {
+        ...preval,
+        more_details: {
+          ...preval.more_details,
+          [name]: value,
+        },
+      };
+    });
+  };
   return (
     <section>
       <PageHeader heading="Upload Product" />
-
       <div className="grid p-3">
         <form className="grid gap-2">
           <InputField
@@ -298,10 +326,41 @@ const UploadProduct = () => {
               required={true}
             />
           </div>
+          {Object.keys(data?.more_details).map((key, index) => (
+            <InputField
+              key={index}
+              label={key}
+              name={key}
+              type={"text"}
+              value={data.more_details[key]}
+              onChange={handleMoreFieldChange}
+              required={true}
+            />
+          ))}
+          <div className="flex">
+            <button
+              onClick={() => setOpenMoreField(true)}
+              type="button"
+              className={
+                " w-32 bg-primary-200 shadow-lg hover:bg-primary-100 cursor-pointer py-2 font-semibold rounded"
+              }
+            >
+              Add Field
+            </button>
+          </div>
         </form>
       </div>
       {viewImageUrl && (
         <ViewImage url={viewImageUrl} close={() => setViewImageUrl(null)} />
+      )}
+
+      {openMoreField && (
+        <AddField
+          close={() => setOpenMoreField(false)}
+          value={fieldName}
+          onChange={(e) => setFieldName(e.target.value)}
+          submit={handleAddMoreField}
+        />
       )}
     </section>
   );
