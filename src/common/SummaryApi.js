@@ -75,6 +75,15 @@ const SummaryApi = {
     }
   },
   //subcategory endpoints end
+
+  //product endpoints start
+  PRODUCT: {
+    ADD: { url: "product/add-product", method: "post" },
+    GET: { url: "product/get-product", method: "get" },
+    UPDATE: { url: "product/update-product", method: "put" },
+    DELETE: { url: "product/delete-product", method: "delete" },
+  },
+  //product endpoints end
 };
 
 export default SummaryApi;

@@ -6,6 +6,8 @@ import SummaryApi from "../common/SummaryApi";
 import Axios from "../utils/Axios";
 import AxiosToast from "../utils/AxiosToast";
 import { selectCategories } from "../store/categorySlice";
+import { useDispatch } from "react-redux";
+import { upsertSubcategory } from "../store/subCategorySlice";
 
 const AddSubCategory = ({ close, fetchData, categoryId }) => {
   const [data, setData] = useState({
@@ -17,6 +19,7 @@ const AddSubCategory = ({ close, fetchData, categoryId }) => {
 
   const [loading, setLoading] = useState(false);
   const allCategory = selectCategories();
+  const dispatch = useDispatch();
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -34,9 +37,9 @@ const AddSubCategory = ({ close, fetchData, categoryId }) => {
         data: data,
       });
       if (response.data.success) {
+        dispatch(upsertSubcategory(response.data.data));
         AxiosToast(response, "success");
         close();
-        // fetchData();
       }
     } catch (e) {
       AxiosToast(e, "error");
@@ -155,8 +158,10 @@ const AddSubCategory = ({ close, fetchData, categoryId }) => {
             <label>Select Category</label>
             <div className="border focus-within:border-primary-200 rounded">
               <select
+                name="category"
                 className="w-full p-2 bg-transparent outline-none"
                 onChange={handleCategorySelection}
+                value={""}
               >
                 <option value={""} disabled>
                   Select Category

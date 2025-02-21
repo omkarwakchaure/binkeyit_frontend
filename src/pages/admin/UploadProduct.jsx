@@ -9,6 +9,9 @@ import { selectCategories } from "../../store/categorySlice";
 import { IoClose } from "react-icons/io5";
 import { selectSubCategories } from "../../store/subCategorySlice";
 import AddField from "../../components/AddField";
+import SummaryApi from "../../common/SummaryApi";
+import Axios from "../../utils/Axios";
+import AxiosToast from "../../utils/AxiosToast";
 const UploadProduct = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [viewImageUrl, setViewImageUrl] = useState(null);
@@ -21,7 +24,7 @@ const UploadProduct = () => {
     name: "",
     image: [],
     category: [],
-    subCategory: [],
+    sub_category: [],
     unit: "",
     stock: "",
     price: "",
@@ -95,23 +98,23 @@ const UploadProduct = () => {
     const subCategory = allSubCategory.find(
       (subCategory) => subCategory._id === value
     );
-    if (data.subCategory.find((c) => c._id === subCategory._id)) return;
+    if (data.sub_category.find((c) => c._id === subCategory._id)) return;
     setData((preval) => {
       return {
         ...preval,
-        subCategory: [...preval.subCategory, subCategory],
+        sub_category: [...preval.sub_category, subCategory],
       };
     });
   };
 
   const removeSubCategory = (subCategory) => {
     setData((preval) => {
-      const updatedSubCategories = preval.subCategory.filter(
+      const updatedSubCategories = preval.sub_category.filter(
         (c) => c._id !== subCategory._id
       );
       return {
         ...preval,
-        subCategory: updatedSubCategories,
+        sub_category: updatedSubCategories,
       };
     });
   };
@@ -141,11 +144,29 @@ const UploadProduct = () => {
       };
     });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await Axios({
+        ...SummaryApi.PRODUCT.ADD,
+        data,
+      });
+      console.log(response);
+      if (response.data.success) {
+        AxiosToast(response, "success");
+      }
+    } catch (error) {
+      console.log(error);
+      AxiosToast(error);
+    }
+  };
+
   return (
     <section>
       <PageHeader heading="Upload Product" />
       <div className="grid p-3">
-        <form className="grid gap-2">
+        <form className="grid gap-2" onSubmit={handleSubmit}>
           <InputField
             label={"Product Name"}
             name={"name"}
@@ -214,8 +235,10 @@ const UploadProduct = () => {
             <label>Select Category</label>
             <div className="border focus-within:border-primary-200 rounded">
               <select
+                name="category"
                 className="w-full p-2 bg-transparent outline-none"
                 onChange={handleCategorySelection}
+                value={""}
               >
                 <option value={""} disabled>
                   Select Category
@@ -252,8 +275,10 @@ const UploadProduct = () => {
             <label>Select Sub-Category</label>
             <div className="border focus-within:border-primary-200 rounded">
               <select
+                name="sub_category"
                 className="w-full p-2 bg-transparent outline-none"
                 onChange={handleSubCategorySelection}
+                value={""}
               >
                 <option value={""} disabled>
                   Select Sub-Category
@@ -266,7 +291,7 @@ const UploadProduct = () => {
               </select>
 
               <div className="flex flex-wrap">
-                {data.subCategory.map((category) => {
+                {data.sub_category.map((category) => {
                   return (
                     <div
                       key={category._id}
@@ -342,10 +367,19 @@ const UploadProduct = () => {
               onClick={() => setOpenMoreField(true)}
               type="button"
               className={
-                " w-32 bg-primary-200 shadow-lg hover:bg-primary-100 cursor-pointer py-2 font-semibold rounded"
+                " w-32 bg-white-200 border border-primary-200 shadow-lg hover:bg-primary-100 cursor-pointer py-2 font-semibold rounded"
               }
             >
               Add Field
+            </button>
+          </div>
+          <div className="flex w-full justify-center">
+            <button
+              className={
+                " w-36 bg-primary-200 shadow-lg hover:bg-primary-100 cursor-pointer py-2 font-semibold rounded"
+              }
+            >
+              Submit
             </button>
           </div>
         </form>

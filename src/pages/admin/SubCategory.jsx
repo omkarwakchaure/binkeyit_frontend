@@ -15,6 +15,7 @@ import {
   setSelectedSubCategory,
   selectSubCategories,
   setSubCategories,
+  removeSubCategory,
 } from "../../store/subCategorySlice";
 import ConfirmBox from "../../components/ConfirmBox";
 
@@ -84,26 +85,6 @@ const SubCategory = () => {
       },
     }),
   ];
-  // const fetchSubCategory = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await Axios({
-  //       ...SummaryApi.SUB_CATEGORY.GET,
-  //     });
-  //     if (response.data.success) {
-  //       // setData(response.data.data);
-  //       dispatch(setSubCategories(response.data.data));
-  //     }
-  //   } catch (error) {
-  //     AxiosToast(error, "error");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchSubCategory();
-  // }, []);
 
   const handleDeleteSubCategory = async () => {
     setShowDeleteConfirmBox(false);
@@ -113,10 +94,13 @@ const SubCategory = () => {
         data: deleteSubCategory,
       });
       if (response.status) {
+        dispatch(removeSubCategory(deleteSubCategory))
         AxiosToast(response, "success");
-        fetchSubCategory();
+        // fetchSubCategory();
       }
-    } catch (error) {}
+    } catch (error) {
+      AxiosToast(error, "error");
+    }
   };
   return (
     <section>

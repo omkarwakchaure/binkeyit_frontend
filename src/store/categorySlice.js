@@ -26,6 +26,7 @@ const CategorySlice = createSlice({
         return category;
       });
     },
+   
 
     removeCategory: (state, action) => {
       state.categories = state.categories.filter(
