@@ -234,7 +234,8 @@ const UploadProduct = () => {
                     />
                     <div
                       onClick={() => handleDeleteImage(index)}
-                      className="absolute bottom-0 right-0 p-1 hover:bg-red-500 cursor-pointer text-white rounded-md hidden group-hover:block"
+                      className="absolute bottom-1 right-1 p-1 bg-white bg-opacity-80 rounded-md text-red-500 
+               hover:bg-red-500 hover:text-white cursor-pointer transition-all duration-200 hidden group-hover:block"
                     >
                       <MdDelete size={20} />
                     </div>
