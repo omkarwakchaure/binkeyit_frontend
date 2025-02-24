@@ -16,7 +16,9 @@ const CategorySlice = createSlice({
       };
     },
     addCategory: (state, action) => {
-      state.categories = [action.payload, ...state.categories];
+      state.categories = [action.payload, ...state.categories].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
     },
     updateCategory: (state, action) => {
       state.categories = state.categories.map((category) => {
@@ -26,7 +28,6 @@ const CategorySlice = createSlice({
         return category;
       });
     },
-   
 
     removeCategory: (state, action) => {
       state.categories = state.categories.filter(

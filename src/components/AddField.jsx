@@ -22,6 +22,7 @@ const AddField = ({ close, value, onChange, submit }) => {
           />
           <div className="flex justify-center mt-2">
             <button
+              disabled={!value}
               onClick={submit}
               type="submit"
               className={

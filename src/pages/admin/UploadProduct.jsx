@@ -154,6 +154,18 @@ const UploadProduct = () => {
       });
       console.log(response);
       if (response.data.success) {
+        setData({
+          name: "",
+          image: [],
+          category: [],
+          sub_category: [],
+          unit: "",
+          stock: "",
+          price: "",
+          discount: "",
+          description: "",
+          more_details: {},
+        });
         AxiosToast(response, "success");
       }
     } catch (error) {
