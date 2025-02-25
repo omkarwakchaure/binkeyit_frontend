@@ -79,7 +79,7 @@ const SummaryApi = {
   //product endpoints start
   PRODUCT: {
     ADD: { url: "product/add-product", method: "POST" },
-    GET_ALL: { url: "product/get-all-product", method: "GET" },
+    GET_ALL: { url: "product/get-all-product", method: "POST" },
     UPDATE: { url: "product/update-product", method: "put" },
     DELETE: { url: "product/delete-product", method: "delete" },
   },
