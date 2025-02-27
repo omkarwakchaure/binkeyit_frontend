@@ -12,7 +12,7 @@ const Dashboard = () => {
         </div>
 
         {/* right for content */}
-        <div className="bg-white py-2.5 shadow-md rounded-lg px-4 max-h-[74vh] overflow-y-auto">
+        <div className="bg-white py-2.5 shadow-md rounded-lg px-4 min-h-[74vh]">
           <Outlet />
         </div>
       </div>

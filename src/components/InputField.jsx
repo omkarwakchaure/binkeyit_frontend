@@ -20,6 +20,7 @@ const InputField = ({
       <div className="p-2 border rounded focus-within:border-primary-200 flex items-center">
         {type !== "textarea" && (
           <>
+            {icon && <div className="mr-4 text-gray-500">{icon}</div>}
             <input
               className=" w-full outline-none"
               type={
